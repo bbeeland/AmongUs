@@ -1,0 +1,8 @@
+# Intellij Folder
+.idea
+
+# Intellij Project File
+AmongUs.iml
+
+# Maven Generated Folder
+target

@@ -1,0 +1,30 @@
+# Default Lobby Settings!
+Defaults:
+  # Options: PRIVATE or PUBLIC
+  GAME_VISIBILITY: "PRIVATE"
+  # Options: true or false
+  CONFIRM_EJECTS: true
+  # How many meetings can the crew call? (Must be an integer)
+  EMERGENCY_MEETING_COUNT: 1
+  # How long before an emergency meeting can be called? (Must be an integer)
+  EMERGENCY_MEETING_COOLDOWN: 60
+  # How long will people have to discuss? (In seconds, must be an integer)
+  DISCUSSION_TIME: 90
+  # How long will people have to vote? (In seconds, must be an integer)
+  VOTING_TIME: 30
+  # How fast will players move? This must be 1, 2, or 3
+  # If 1 players will move at default speed.
+  # If 2 players will have speed 1 potion effect
+  # If 3 players will have speed 2 potion effect
+  PLAYER_SPEED: 1
+  # How often can an imposter kill? (Must be an interger in seconds
+  KILL_COOLDOWN: 15
+  # How far away can someone be to kill? (In blocks, must be an integer)
+  KILL_DISTANCE: 5
+  # Options: true or false
+  VISUAL_TASKS: true
+  # How many tasks will be given to each person? (Must be an integer)
+  TASK_COUNT: 3
+
+
+Lobbies:
