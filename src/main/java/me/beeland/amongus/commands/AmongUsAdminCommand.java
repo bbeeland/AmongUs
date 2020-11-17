@@ -1,6 +1,7 @@
 package me.beeland.amongus.commands;
 
 import me.beeland.amongus.AmongUs;
+import me.beeland.amongus.Language;
 import me.beeland.amongus.arena.Arena;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -9,6 +10,7 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.UUID;
 
 public class AmongUsAdminCommand implements CommandExecutor, TabExecutor {
 
@@ -22,7 +24,7 @@ public class AmongUsAdminCommand implements CommandExecutor, TabExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
         if(!(sender instanceof Player)) {
-            //TODO: Get message from language file and send error
+            plugin.send(sender, Language.PLAYER_ONLY);
             return true;
         }
 
@@ -39,15 +41,10 @@ public class AmongUsAdminCommand implements CommandExecutor, TabExecutor {
 
                 if(args[1].equalsIgnoreCase("create")) {
 
-                    Arena arena = new Arena(null);
-
+                    Arena arena = new Arena(plugin, UUID.randomUUID());
                     plugin.getArenaManager().addArena(arena);
 
-                    plugin.getArenaConfig().getConfig().set(arena.getId() + ".Lobby", null);
-                    plugin.getArenaConfig().getConfig().set(arena.getId() + ".Meeting", null);
-                    plugin.getArenaConfig().save();
-
-                    player.sendMessage("arena id: " + arena.getId());
+                    player.sendMessage("arena id: " + arena.getShortId());
                     return true;
 
                 }

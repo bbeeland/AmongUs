@@ -1,0 +1,2 @@
+# Sent to console when only a player can execute a command
+Player-Only: "&c&lERROR: &cOnly a player can execute this!"

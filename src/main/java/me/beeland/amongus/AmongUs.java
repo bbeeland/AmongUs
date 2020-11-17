@@ -1,22 +1,23 @@
 package me.beeland.amongus;
 
-import me.beeland.amongus.arena.Arena;
 import me.beeland.amongus.arena.ArenaManager;
 import me.beeland.amongus.commands.AmongUsAdminCommand;
 import me.beeland.amongus.game.LobbyManager;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.IOException;
+
 public class AmongUs extends JavaPlugin {
 
-    private PluginConfig mainConfig;
-    private PluginConfig langConfig;
-    private PluginConfig arenaConfig;
+    private PluginConfig mainConfig, langConfig, arenaConfig;
 
     private ArenaManager arenaManager;
     private LobbyManager lobbyManager;
@@ -27,23 +28,18 @@ public class AmongUs extends JavaPlugin {
         this.mainConfig = new PluginConfig(this, "config.yml", true);
         this.langConfig = new PluginConfig(this, "lang.yml", true);
         this.arenaConfig = new PluginConfig(this, "arenas.yml", false);
-        this.arenaManager = new ArenaManager();
+
+        this.arenaManager = new ArenaManager(this);
         this.lobbyManager = new LobbyManager();
 
         registerCommand("amongusadmin", new AmongUsAdminCommand(this), true);
 
-        for(String string : mainConfig.getConfig().getConfigurationSection("Lobbies").getKeys(false)) {
+    }
 
-            Arena arena = new Arena(string);
+    @Override
+    public void onDisable() {
 
-            arena.setLobbyLocation(deserializeLocation(mainConfig.getConfig().getString("Lobbies." + string + ".Lobby")));
-            arena.setMeetingLocation(deserializeLocation(mainConfig.getConfig().getString("Lobbies." + string + ".Meeting")));
-
-            arenaManager.addArena(arena);
-
-            getLogger().info("Arena Loaded -> " + string);
-
-        }
+        this.arenaManager.disable();
 
     }
 
@@ -107,6 +103,14 @@ public class AmongUs extends JavaPlugin {
             command.setTabCompleter((TabExecutor) commandExecutor);
         }
 
+    }
+
+    public void send(CommandSender sender, Language language) {
+        sender.sendMessage(toColor(langConfig.getString(language.getPath())));
+    }
+
+    public String toColor(String message) {
+        return ChatColor.translateAlternateColorCodes('&', message);
     }
 
 }

@@ -8,44 +8,62 @@ import java.io.IOException;
 
 public class PluginConfig {
 
-    private FileConfiguration config;
+    private AmongUs plugin;
     private File file;
+    private FileConfiguration configuration;
 
-    public PluginConfig(AmongUs plugin, String name, boolean copy) {
+    public PluginConfig(AmongUs plugin, String fileName, boolean hasDefault) {
 
-        this.file = new File(plugin.getDataFolder(), name);
+        this.plugin = plugin;
+        this.file = new File(plugin.getDataFolder(), fileName);
 
-        if(!file.exists()) {
+        if(!plugin.getDataFolder().exists()) {
+            plugin.getDataFolder().mkdir();
+        }
 
-            if(copy) {
-                plugin.saveResource(name, false);
+        if(!this.file.exists()) {
+
+            if(hasDefault) {
+                plugin.saveResource(fileName, true);
             } else {
                 try {
-                    file.createNewFile();
+                    this.file.createNewFile();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
+
         }
+
         reload();
     }
+
     public FileConfiguration getConfig() {
-        return config;
+        return configuration;
+    }
+
+    public void reload() {
+        configuration = YamlConfiguration.loadConfiguration(file);
+    }
+
+    public void save() {
+        try {
+            configuration.save(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String getString(String key) {
+        return configuration.getString(key);
+    }
+
+    public double getDouble(String key) {
+        return configuration.getDouble(key);
     }
 
     public File getFile() {
         return file;
-    }
-
-    public void reload() {
-        config = YamlConfiguration.loadConfiguration(file);
-    }
-    public void save() {
-        try {
-            config.save(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
 }
