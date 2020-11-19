@@ -13,7 +13,7 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.IOException;
+import java.util.Arrays;
 
 public class AmongUs extends JavaPlugin {
 
@@ -69,19 +69,19 @@ public class AmongUs extends JavaPlugin {
 
         StringBuilder builder = new StringBuilder();
 
-        builder.append(location.getWorld().getName()).append("+")
-                .append(location.getX()).append("+")
-                .append(location.getY()).append("+")
-                .append(location.getZ()).append("+")
-                .append(location.getYaw()).append("+")
-                .append(location.getPitch()).append("+");
+        builder.append(location.getWorld().getName()).append("|")
+                .append(location.getX()).append("|")
+                .append(location.getY()).append("|")
+                .append(location.getZ()).append("|")
+                .append(location.getYaw()).append("|")
+                .append(location.getPitch());
 
         return  builder.toString();
     }
 
     public Location deserializeLocation(String serializedLocation) {
 
-        String[] split = serializedLocation.split("/+");
+        String[] split = serializedLocation.split("\\|");
 
         World world = Bukkit.getWorld(split[0]);
         double x = Double.parseDouble(split[1]);

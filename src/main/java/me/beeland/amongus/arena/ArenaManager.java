@@ -2,8 +2,8 @@ package me.beeland.amongus.arena;
 
 import com.google.common.collect.Lists;
 import me.beeland.amongus.AmongUs;
+import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.List;
 import java.util.UUID;
@@ -23,9 +23,20 @@ public class ArenaManager {
         for(String id : arenaConf.getKeys(false)) {
 
             Arena arena = new Arena(plugin, UUID.fromString(id));
+            String lobbyLocationString = arenaConf.getString(id + ".Lobby");
+            Location lobbyLoc = lobbyLocationString.equalsIgnoreCase("unset") ? null : plugin.deserializeLocation(lobbyLocationString);
 
-            arena.setMeetingLocation(plugin.deserializeLocation(arenaConf.getString(id + ".Meeting")));
-            arena.setLobbyLocation(plugin.deserializeLocation(arenaConf.getString(id + ".Lobby")));
+            arena.setLobbyLocation(lobbyLoc);
+
+            if(arenaConf.contains(id + ".Meeting")) {
+
+                for(String string : arenaConf.getStringList(id + ".Meeting")) {
+                    arena.addMeetingLocation(plugin.deserializeLocation(string));
+                }
+
+            }
+
+            arenas.add(arena);
 
             plugin.getLogger().info("Arena Loaded : " + id);
         }
@@ -55,6 +66,15 @@ public class ArenaManager {
 
         for(Arena arena : arenas) {
             if(arena.getId().toString().equalsIgnoreCase(id.toString())) return arena;
+        }
+
+        return null;
+    }
+
+    public Arena getArenaByShortId(String shortId) {
+
+        for(Arena arena : arenas) {
+            if(arena.getShortId().equalsIgnoreCase(shortId)) return arena;
         }
 
         return null;

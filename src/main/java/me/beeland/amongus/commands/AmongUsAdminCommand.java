@@ -53,6 +53,90 @@ public class AmongUsAdminCommand implements CommandExecutor, TabExecutor {
 
         }
 
+        if(args.length == 4) {
+
+            if(args[0].equalsIgnoreCase("arena")) {
+
+                if(args[1].equalsIgnoreCase("lobby")) {
+
+                    if(args[2].equalsIgnoreCase("set")) {
+
+                        String shortId = args[3];
+                        Arena arena = plugin.getArenaManager().getArenaByShortId(shortId);
+
+                        if(arena == null) {
+
+                            sender.sendMessage("Arena not found!");
+                            return true;
+
+                        }
+
+                        arena.setLobbyLocation(player.getLocation());
+                        player.sendMessage("Location set!");
+                        return true;
+
+
+                    }
+
+                }
+
+                if(args[1].equalsIgnoreCase("meeting")) {
+
+                    if(args[2].equalsIgnoreCase("add")) {
+
+                        String shortId = args[3];
+                        Arena arena = plugin.getArenaManager().getArenaByShortId(shortId);
+
+                        if(arena == null) {
+
+                            sender.sendMessage("Arena not found!");
+                            return true;
+
+                        }
+
+                        arena.addMeetingLocation(player.getLocation());
+                        player.sendMessage("Location added!");
+                        return true;
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        if(args.length == 5) {
+
+            if(args[0].equalsIgnoreCase("arena")) {
+
+                if(args[1].equalsIgnoreCase("meeting")) {
+
+                    if(args[2].equalsIgnoreCase("add")) {
+
+                        String shortId = args[3];
+                        Arena arena = plugin.getArenaManager().getArenaByShortId(shortId);
+
+                        if(arena == null) {
+
+                            sender.sendMessage("Arena not found!");
+                            return true;
+
+                        }
+
+                        arena.setLobbyLocation(player.getLocation());
+                        player.sendMessage("Location set!");
+                        return true;
+
+
+                    }
+
+                }
+
+            }
+
+        }
+
         return false;
     }
 
