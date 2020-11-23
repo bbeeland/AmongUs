@@ -1,2 +1,12 @@
 # Sent to console when only a player can execute a command
 Player-Only: "&c&lERROR: &cOnly a player can execute this!"
+#Sent when a new game is created
+Lobby-Created: "Welcome to your lobby!"
+
+#Names of tasks
+Names:
+  Upload-Data: "Upload Data"
+
+#Descriptions of tasks
+Info:
+  Upload-Data: "Upload Data!"

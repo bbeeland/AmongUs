@@ -3,6 +3,7 @@ package me.beeland.amongus.game;
 public enum GameState {
 
     LOBBY(true, true),
+    STARTING(true, true),
     IN_GAME(false, false),
     ENDING(false, true),
     VOTING(false, true);

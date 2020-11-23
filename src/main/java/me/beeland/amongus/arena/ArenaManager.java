@@ -44,7 +44,7 @@ public class ArenaManager {
 
     }
 
-    public void disable() {
+    public void save() {
 
         for(Arena arena : getArenas()) arena.save();
 
@@ -78,6 +78,19 @@ public class ArenaManager {
         }
 
         return null;
+    }
+
+    public Arena getValidArena() {
+
+        Arena arena = null;
+
+        for(Arena a : arenas) {
+
+            if(a.getLobbyLocation() != null && !a.getMeetingLocations().isEmpty()) {
+                arena = a;
+            }
+        }
+        return arena;
     }
 
 }

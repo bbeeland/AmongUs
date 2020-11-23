@@ -7,3 +7,5 @@ author: Britton Beeland
 commands:
   amongusadmin:
     usage: /<command>
+  amongus:
+    usage: /<command>

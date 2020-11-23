@@ -2,6 +2,7 @@ package me.beeland.amongus;
 
 import me.beeland.amongus.arena.ArenaManager;
 import me.beeland.amongus.commands.AmongUsAdminCommand;
+import me.beeland.amongus.commands.AmongUsCommand;
 import me.beeland.amongus.game.LobbyManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -12,8 +13,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.Arrays;
 
 public class AmongUs extends JavaPlugin {
 
@@ -33,13 +32,14 @@ public class AmongUs extends JavaPlugin {
         this.lobbyManager = new LobbyManager();
 
         registerCommand("amongusadmin", new AmongUsAdminCommand(this), true);
+        registerCommand("amongus", new AmongUsCommand(this), true);
 
     }
 
     @Override
     public void onDisable() {
 
-        this.arenaManager.disable();
+        this.arenaManager.save();
 
     }
 
@@ -107,6 +107,10 @@ public class AmongUs extends JavaPlugin {
 
     public void send(CommandSender sender, Language language) {
         sender.sendMessage(toColor(langConfig.getString(language.getPath())));
+    }
+
+    public String getLang(Language language) {
+        return toColor(langConfig.getString(language.getPath()));
     }
 
     public String toColor(String message) {

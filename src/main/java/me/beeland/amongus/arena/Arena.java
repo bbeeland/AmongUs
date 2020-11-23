@@ -2,6 +2,7 @@ package me.beeland.amongus.arena;
 
 import com.google.common.collect.Lists;
 import me.beeland.amongus.AmongUs;
+import me.beeland.amongus.game.lobby.Lobby;
 import org.bukkit.Location;
 
 import java.util.List;
@@ -16,11 +17,14 @@ public class Arena {
     private Location lobbyLocation;
     private List<Location> meetingLocations;
 
+    private Lobby owningLobby;
+
     public Arena(AmongUs plugin, UUID id) {
         this.plugin = plugin;
         this.id = id;
         this.shortId = id.toString().split("-")[0];
         this.meetingLocations = Lists.newArrayList();
+        this.owningLobby = null;
     }
 
     public UUID getId() {
@@ -49,6 +53,14 @@ public class Arena {
 
     public void removeMeetingLocation(Location location) {
         this.meetingLocations.remove(location);
+    }
+
+    public Lobby getOwningLobby() {
+        return owningLobby;
+    }
+
+    public void setOwningLobby(Lobby owningLobby) {
+        this.owningLobby = owningLobby;
     }
 
     public void save() {

@@ -2,9 +2,9 @@ package me.beeland.amongus.game;
 
 import com.google.common.collect.Sets;
 import me.beeland.amongus.arena.Arena;
+import me.beeland.amongus.game.lobby.Lobby;
 import org.bukkit.entity.Player;
 
-import javax.xml.stream.Location;
 import java.util.Set;
 
 public class LobbyManager {
