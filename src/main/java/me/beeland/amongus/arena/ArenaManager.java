@@ -2,6 +2,7 @@ package me.beeland.amongus.arena;
 
 import com.google.common.collect.Lists;
 import me.beeland.amongus.AmongUs;
+import me.beeland.amongus.game.task.TaskType;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -32,6 +33,17 @@ public class ArenaManager {
 
                 for(String string : arenaConf.getStringList(id + ".Meeting")) {
                     arena.addMeetingLocation(plugin.deserializeLocation(string));
+                }
+
+            }
+
+            if(arenaConf.contains(id + ".Tasks")) {
+
+                for(String taskTypeString : arenaConf.getConfigurationSection(id + ".Tasks").getKeys(false)) {
+
+                    List<String> taskLocations = arenaConf.getStringList(id + ".Tasks." + taskTypeString);
+
+                    taskLocations.forEach(string -> arena.addTaskLocation(TaskType.valueOf(taskTypeString), plugin.deserializeLocation(string)));
                 }
 
             }

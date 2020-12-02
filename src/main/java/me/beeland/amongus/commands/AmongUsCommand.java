@@ -31,7 +31,10 @@ public class AmongUsCommand implements CommandExecutor, TabExecutor {
 
         if(args.length == 1) {
 
-            plugin.getLobbyManager().addLobby(new Lobby(plugin, player));
+            Lobby lobby = new Lobby(plugin, player);
+
+            plugin.getLobbyManager().addLobby(lobby);
+            player.sendMessage("JOIN CODE -> " + lobby.getJoinCode());
 
         }
 

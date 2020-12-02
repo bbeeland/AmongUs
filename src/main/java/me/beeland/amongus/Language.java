@@ -7,7 +7,13 @@ public enum Language {
     LOBBY_CREATED("Lobby-Created"),
 
     UPLOAD_DATA_NAME("Names.Upload-Data"),
-    UPLOAD_DATA_INFO("Info.Upload-Data");
+    UPLOAD_DATA_INFO("Info.Upload-Data"),
+
+    TASK_STARTED("Task-Started"),
+    TASK_COMPLETED("Task-Completed"),
+    TASK_RESTARTED("Task-Restarted"),
+
+    UPLOAD_DATA_MENU_TITLE("Titles.Upload-Data");
 
     private String path;
 

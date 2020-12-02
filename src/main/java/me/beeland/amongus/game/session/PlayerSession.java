@@ -3,6 +3,7 @@ package me.beeland.amongus.game.session;
 import me.beeland.amongus.game.PlayerTeam;
 import me.beeland.amongus.game.lobby.Lobby;
 import me.beeland.amongus.game.task.CrewTask;
+import me.beeland.amongus.game.task.TaskType;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -16,12 +17,15 @@ public class PlayerSession {
     private HashMap<CrewTask, Boolean> tasks;
     private PlayerTeam playerTeam;
 
+    private TaskType currentTask;
+    private int taskStage;
+
     public PlayerSession(Lobby lobby, UUID playerId) {
 
         this.lobby = lobby;
         this.playerId = playerId;
 
-    }
+}
 
     public Lobby getLobby() {
         return lobby;
@@ -45,6 +49,34 @@ public class PlayerSession {
 
     public void removeTask(CrewTask task) {
         tasks.remove(task);
+    }
+
+    public PlayerTeam getPlayerTeam() {
+        return playerTeam;
+    }
+
+    public void setPlayerTeam(PlayerTeam playerTeam) {
+        this.playerTeam = playerTeam;
+    }
+
+    public TaskType getCurrentTask() {
+        return currentTask;
+    }
+
+    public void setCurrentTask(TaskType currentTask) {
+        this.currentTask = currentTask;
+    }
+
+    public int getTaskStage() {
+        return taskStage;
+    }
+
+    public void setTaskStage(int taskStage) {
+        this.taskStage = taskStage;
+    }
+
+    public void nextTaskStage() {
+        this.taskStage += 1;
     }
 
     public void completeTask(CrewTask task) {

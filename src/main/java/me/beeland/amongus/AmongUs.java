@@ -14,6 +14,8 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Random;
+
 public class AmongUs extends JavaPlugin {
 
     private PluginConfig mainConfig, langConfig, arenaConfig;
@@ -107,6 +109,33 @@ public class AmongUs extends JavaPlugin {
 
     public void send(CommandSender sender, Language language) {
         sender.sendMessage(toColor(langConfig.getString(language.getPath())));
+    }
+
+    public String getRandomJoinCode() {
+
+        Random random = new Random();
+        String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String code = "";
+
+        for(int i = 0; i < 5; i++) {
+
+            code += alphabet.charAt(random.nextInt(alphabet.length()));
+
+            if(i == 4) {
+
+                if(random.nextBoolean()) {
+
+                    code += "Q";
+
+                } else {
+                    code += alphabet.charAt(random.nextInt(alphabet.length()));
+                }
+
+            }
+
+        }
+
+        return code.toUpperCase();
     }
 
     public String getLang(Language language) {

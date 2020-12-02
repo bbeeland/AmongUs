@@ -3,6 +3,7 @@ package me.beeland.amongus.commands;
 import me.beeland.amongus.AmongUs;
 import me.beeland.amongus.Language;
 import me.beeland.amongus.arena.Arena;
+import me.beeland.amongus.game.task.TaskType;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -61,8 +62,7 @@ public class AmongUsAdminCommand implements CommandExecutor, TabExecutor {
 
                     if(args[2].equalsIgnoreCase("set")) {
 
-                        String shortId = args[3];
-                        Arena arena = plugin.getArenaManager().getArenaByShortId(shortId);
+                        Arena arena = plugin.getArenaManager().getArenaByShortId(args[3]);
 
                         if(arena == null) {
 
@@ -84,8 +84,7 @@ public class AmongUsAdminCommand implements CommandExecutor, TabExecutor {
 
                     if(args[2].equalsIgnoreCase("add")) {
 
-                        String shortId = args[3];
-                        Arena arena = plugin.getArenaManager().getArenaByShortId(shortId);
+                        Arena arena = plugin.getArenaManager().getArenaByShortId(args[3]);
 
                         if(arena == null) {
 
@@ -128,6 +127,25 @@ public class AmongUsAdminCommand implements CommandExecutor, TabExecutor {
                         player.sendMessage("Location set!");
                         return true;
 
+
+                    }
+
+                }
+
+                if(args[1].equalsIgnoreCase("task")) {
+
+                    if(args[2].equalsIgnoreCase("add")) {
+
+                        TaskType type = TaskType.valueOf(args[3]);
+                        Arena arena = plugin.getArenaManager().getArenaByShortId(args[4]);
+
+                        if(arena == null) {
+                            player.sendMessage("Arena not found");
+                            return true;
+                        }
+
+                        arena.addTaskLocation(type, player.getTargetBlock(null, 10).getLocation());
+                        player.sendMessage("Location added for task!");
 
                     }
 

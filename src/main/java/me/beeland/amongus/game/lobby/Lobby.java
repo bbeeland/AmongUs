@@ -5,10 +5,12 @@ import com.google.common.collect.Maps;
 import me.beeland.amongus.AmongUs;
 import me.beeland.amongus.arena.Arena;
 import me.beeland.amongus.game.GameState;
-import me.beeland.amongus.game.LobbySettings;
+import me.beeland.amongus.game.LobbySetting;
 import me.beeland.amongus.game.Timer;
 import me.beeland.amongus.game.session.PlayerSession;
 import me.beeland.amongus.game.task.UploadDataTask;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -22,26 +24,30 @@ public class Lobby {
     private String joinCode;
     private Arena arena;
     private GameState state;
-    private HashMap<LobbySettings, String> settings;
+    private HashMap<LobbySetting, String> settings;
     private Timer timer;
     private UUID host;
     private UUID imposter;
     private List<UUID> ingame;
     private List<PlayerSession> playerSessions;
 
-    private HashMap<PlayerSession, UploadDataTask> queue;
+    private HashMap<PlayerSession, UploadDataTask> dataUploadQueue;
+    private HashMap<PlayerSession, UploadDataTask> dataUploadInProgress;
 
 
     public Lobby(AmongUs plugin, Player host) {
 
         this.plugin = plugin;
+        this.joinCode = plugin.getRandomJoinCode();
         this.settings = Maps.newHashMap();
         this.timer = new Timer(plugin, this);
         this.host = host.getUniqueId();
         this.ingame = Lists.newArrayList();
         this.playerSessions = Lists.newArrayList();
 
-        for(LobbySettings lobbySetting : LobbySettings.values()) {
+        this.dataUploadQueue = Maps.newHashMap();
+
+        for(LobbySetting lobbySetting : LobbySetting.values()) {
             settings.put(lobbySetting, plugin.getConfig().getString("Defaults." + lobbySetting));
         }
 
@@ -57,8 +63,6 @@ public class Lobby {
 
         this.playerSessions.add(new PlayerSession(this, host.getUniqueId()));
         host.teleport(arena.getLobbyLocation());
-
-        timer.runTaskTimerAsynchronously(plugin, 1, 20);
 
     }
 
@@ -78,7 +82,7 @@ public class Lobby {
         this.state = state;
     }
 
-    public HashMap<LobbySettings, String> getSettings() {
+    public HashMap<LobbySetting, String> getSettings() {
         return settings;
     }
 
@@ -118,12 +122,50 @@ public class Lobby {
         playerSessions.remove(session);
     }
 
+    public HashMap<PlayerSession, UploadDataTask> getDataUploadQueue() {
+        return dataUploadQueue;
+    }
+
+    public void addDataUploadQueue(PlayerSession session, UploadDataTask task) {
+        this.dataUploadQueue.put(session, task);
+    }
+
+    public void removeDataUploadQueue(PlayerSession session) {
+        this.dataUploadQueue.remove(session);
+    }
+
     public PlayerSession getSessionByUUID(UUID uuid) {
 
         for(PlayerSession session : playerSessions) {
             if(session.getPlayerId().toString().equalsIgnoreCase(uuid.toString())) return session;
         }
         return null;
+    }
+
+    public void announceActionbar(String msg, boolean includeImposter) {
+
+        playerSessions.forEach(session -> {
+
+            Player player = session.getPlayer();
+
+            if(includeImposter) {
+
+                sendMessage(player, ChatMessageType.ACTION_BAR, msg);
+
+            } else {
+
+                if(imposter.toString().equals(session.getPlayerId().toString())) return;
+
+                sendMessage(player, ChatMessageType.ACTION_BAR, msg);
+
+            }
+
+        });
+
+    }
+
+    public void sendMessage(Player player, ChatMessageType type, String message) {
+        player.spigot().sendMessage(type, new ComponentBuilder(message).create());
     }
 
 }

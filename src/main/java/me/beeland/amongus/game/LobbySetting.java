@@ -1,6 +1,6 @@
 package me.beeland.amongus.game;
 
-public enum LobbySettings {
+public enum LobbySetting {
 
     GAME_VISIBILITY(),
 
